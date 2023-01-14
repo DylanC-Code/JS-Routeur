@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
+import { Route } from "./Route.js";
 
 export type Controller = (
   req: IncomingMessage,
@@ -12,7 +13,5 @@ export interface Routes {
   DELETE?: Route[];
   PUT?: Route[];
 }
-
-export type Route = { uri: string; controller: Controller };
 
 export type HTTPMethod = "GET" | "POST" | "DELETE" | "PUT";

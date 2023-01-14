@@ -1,25 +1,27 @@
+import { Route } from "./Route.js";
 export class Routeur {
     routes = {};
-    get(uri, controller) {
-        this.new(uri, controller, "GET");
+    get(path, controller) {
+        this.new(path, controller, "GET");
     }
-    post(uri, controller) {
-        this.new(uri, controller, "POST");
+    post(path, controller) {
+        this.new(path, controller, "POST");
     }
-    delete(uri, controller) {
-        this.new(uri, controller, "DELETE");
+    delete(path, controller) {
+        this.new(path, controller, "DELETE");
     }
-    put(uri, controller) {
-        this.new(uri, controller, "PUT");
+    put(path, controller) {
+        this.new(path, controller, "PUT");
     }
-    new(uri, controller, method) {
+    new(path, controller, method) {
         this.initialisezMethod(method);
-        this.routes[method]?.push({ uri, controller });
+        const route = new Route(path, controller);
+        this.routes[method]?.push(route);
     }
     initialisezMethod(method) {
-        const methodIsInitialised = Object.hasOwn(this.routes, "GET");
+        const methodIsInitialised = Object.hasOwn(this.routes, method);
         if (!methodIsInitialised)
-            this.routes.GET = [];
+            this.routes[method] = [];
     }
 }
 //# sourceMappingURL=Routeur.js.map

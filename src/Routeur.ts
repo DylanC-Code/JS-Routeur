@@ -1,29 +1,31 @@
-import * as UsersControllers from "./Controllers/users.js";
+import { Route } from "./Route.js";
 import { Controller, Routes, HTTPMethod } from "./types.js";
 
 export class Routeur {
   private routes: Routes = {};
 
-  get(uri: string, controller: Controller) {
-    this.new(uri, controller, "GET");
+  get(path: string, controller: Controller) {
+    this.new(path, controller, "GET");
   }
-  post(uri: string, controller: Controller) {
-    this.new(uri, controller, "POST");
+  post(path: string, controller: Controller) {
+    this.new(path, controller, "POST");
   }
-  delete(uri: string, controller: Controller) {
-    this.new(uri, controller, "DELETE");
+  delete(path: string, controller: Controller) {
+    this.new(path, controller, "DELETE");
   }
-  put(uri: string, controller: Controller) {
-    this.new(uri, controller, "PUT");
+  put(path: string, controller: Controller) {
+    this.new(path, controller, "PUT");
   }
 
-  private new(uri: string, controller: Controller, method: HTTPMethod) {
+  private new(path: string, controller: Controller, method: HTTPMethod) {
     this.initialisezMethod(method);
-    this.routes[method]?.push({ uri, controller });
+
+    const route = new Route(path, controller);
+    this.routes[method]?.push(route);
   }
 
   private initialisezMethod(method: HTTPMethod) {
-    const methodIsInitialised = Object.hasOwn(this.routes, "GET");
-    if (!methodIsInitialised) this.routes.GET = [];
+    const methodIsInitialised = Object.hasOwn(this.routes, method);
+    if (!methodIsInitialised) this.routes[method] = [];
   }
 }
