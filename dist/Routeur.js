@@ -1,6 +1,11 @@
 import { Route } from "./Route.js";
+import { Server } from "./Server.js";
 export class Routeur {
+    configs;
     routes = {};
+    constructor(configs) {
+        this.configs = configs;
+    }
     get(path, controller) {
         this.new(path, controller, "GET");
     }
@@ -22,6 +27,10 @@ export class Routeur {
         const methodIsInitialised = Object.hasOwn(this.routes, method);
         if (!methodIsInitialised)
             this.routes[method] = [];
+    }
+    run(callback) {
+        const server = new Server(this.configs, this.routes);
+        server.listen(callback);
     }
 }
 //# sourceMappingURL=Routeur.js.map

@@ -1,17 +1,22 @@
 import { Controller } from "./types";
+import { IncomingMessage, ServerResponse } from "node:http";
 
 export class Route {
-  constructor(private path: string, private controller: Controller) {}
+  private next;
+  constructor(private path: string, private callable: Controller) {
+    this.path = this.trimSlash(path);
+    this.next = arguments;
+    console.log(this.next);
+  }
 
   public match(url: string) {
     url = this.trimSlash(url);
 
     let path = this.path.replace(/:([\w]+)/, "([^/]+)");
-    const regex = new RegExp(path);
+    const regex = new RegExp(path, "i");
 
     const urlMatch = regex.test(url);
-
-    if (urlMatch) this.run();
+    if (urlMatch) return true;
   }
 
   private trimSlash(url: string) {
@@ -23,5 +28,7 @@ export class Route {
     return urlTrimed;
   }
 
-  private run() {}
+  public run(req: IncomingMessage, res: ServerResponse, next?: Function) {
+    this.callable(req, res, next);
+  }
 }

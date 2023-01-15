@@ -1,17 +1,21 @@
 export class Route {
     path;
-    controller;
-    constructor(path, controller) {
+    callable;
+    next;
+    constructor(path, callable) {
         this.path = path;
-        this.controller = controller;
+        this.callable = callable;
+        this.path = this.trimSlash(path);
+        this.next = arguments;
+        console.log(this.next);
     }
     match(url) {
         url = this.trimSlash(url);
         let path = this.path.replace(/:([\w]+)/, "([^/]+)");
-        const regex = new RegExp(path);
+        const regex = new RegExp(path, "i");
         const urlMatch = regex.test(url);
         if (urlMatch)
-            this.run();
+            return true;
     }
     trimSlash(url) {
         let urlTrimed = url;
@@ -21,6 +25,8 @@ export class Route {
             urlTrimed = urlTrimed.slice(0, -1);
         return urlTrimed;
     }
-    run() { }
+    run(req, res, next) {
+        this.callable(req, res, next);
+    }
 }
 //# sourceMappingURL=Route.js.map

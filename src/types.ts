@@ -14,4 +14,7 @@ export interface Routes {
   PUT?: Route[];
 }
 
-export type HTTPMethod = "GET" | "POST" | "DELETE" | "PUT";
+export interface ServerConfig {
+  protocol: "HTTP" | "HTTPS";
+  port: `${number}${number}${number}${number}${number | ""}` | any;
+}
