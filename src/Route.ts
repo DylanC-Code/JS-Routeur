@@ -1,9 +1,10 @@
+import { Response } from "./Response.js";
 import { Controller } from "./types";
-import { IncomingMessage, ServerResponse } from "node:http";
+import { IncomingMessage } from "node:http";
 
 export class Route {
   private req: IncomingMessage | undefined;
-  private res: ServerResponse | undefined;
+  private res: Response | undefined;
 
   constructor(private path: string, private callables: Controller[]) {
     this.path = this.trimSlash(path);
@@ -29,7 +30,7 @@ export class Route {
     return urlTrimed;
   }
 
-  public run(req: IncomingMessage, res: ServerResponse) {
+  public run(req: IncomingMessage, res: Response) {
     this.req = req;
     this.res = res;
     this.next();

@@ -15,9 +15,9 @@ app.get(
   UsersControllers.middleware5,
   UsersControllers.register
 );
-app.get("/users/test", UsersControllers.register);
+app.get("/users/test", UsersControllers.test);
 app.post("/users/register", UsersControllers.register);
 app.delete("/users/delete", UsersControllers.register);
-app.put("/users/update", UsersControllers.register);
+app.post("/users/:name", UsersControllers.getUser);
 
 app.run(() => console.log("Server Listening on PORT :", process.env.PORT));

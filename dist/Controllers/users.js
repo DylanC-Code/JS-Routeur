@@ -1,6 +1,6 @@
 export const register = (req, res) => {
     console.log("register");
-    res.end("hello");
+    res.send({ error: "Pas bien" });
 };
 export const middleware = (req, res, next) => {
     console.log("middleware");
@@ -21,5 +21,11 @@ export const middleware4 = (req, res, next) => {
 export const middleware5 = (req, res, next) => {
     console.log("middleware5");
     next();
+};
+export const test = (req, res, next) => {
+    res.sendStatus(400);
+};
+export const getUser = (req, res, next) => {
+    res.sendStatus(200);
 };
 //# sourceMappingURL=users.js.map

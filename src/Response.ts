@@ -19,17 +19,21 @@ export class Response {
   }
 
   send(content: any) {
-    this.setContentType(content);
-    this.res.end();
+    const dataFormated = this.formatData(content);
+    this.res.end(dataFormated);
   }
 
-  setContentType(content: any) {
+  formatData(content: any) {
     const isBuffer = content instanceof Buffer;
     const isObject = typeof content === "object";
 
     if (isBuffer) this.set("Content-Type", "application/octet-stream");
-    else if (isObject) this.set("Content-Type", "application/json");
-    else this.set("Content-Type", "text/html");
+    else if (isObject) {
+      this.set("Content-Type", "application/json");
+      return JSON.stringify(content);
+    } else this.set("Content-Type", "text/html");
+
+    return content;
   }
 
   set(name: string, value: string) {

@@ -1,5 +1,6 @@
 import { createServer as createServerHTTP, } from "node:http";
 import * as https from "node:https";
+import { Response } from "./Response.js";
 export class Server {
     config;
     routes;
@@ -21,8 +22,9 @@ export class Server {
         this.server = this.server((req, res) => {
             if (typeof req.method !== "string" || typeof req.url !== "string")
                 return;
+            const response = new Response(res);
             const route = this.findRoad(req.method, req.url);
-            route?.run(req, res);
+            route?.run(req, response);
         });
     }
     findRoad(method, url) {

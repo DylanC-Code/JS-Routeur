@@ -1,9 +1,10 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { Route } from "./Route.js";
+import { Response } from "./Response.js";
 
 export type Controller = (
   req: IncomingMessage,
-  res: ServerResponse,
+  res: Response,
   next?: any
 ) => void;
 
