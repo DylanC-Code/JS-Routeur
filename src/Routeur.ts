@@ -6,23 +6,23 @@ export class Routeur {
   private routes: Routes = {};
   constructor(private configs: ServerConfig) {}
 
-  get(path: string, controller: Controller) {
-    this.new(path, controller, "GET");
+  get(path: string, ...controllers: Controller[]) {
+    this.new(path, controllers, "GET");
   }
-  post(path: string, controller: Controller) {
-    this.new(path, controller, "POST");
+  post(path: string, ...controllers: Controller[]) {
+    this.new(path, controllers, "POST");
   }
-  delete(path: string, controller: Controller) {
-    this.new(path, controller, "DELETE");
+  delete(path: string, ...controllers: Controller[]) {
+    this.new(path, controllers, "DELETE");
   }
-  put(path: string, controller: Controller) {
-    this.new(path, controller, "PUT");
+  put(path: string, ...controllers: Controller[]) {
+    this.new(path, controllers, "PUT");
   }
 
-  private new(path: string, controller: Controller, method: string) {
+  private new(path: string, controllers: Controller[], method: string) {
     this.initialisezMethod(method);
 
-    const route = new Route(path, controller);
+    const route = new Route(path, controllers);
     this.routes[method as keyof Routes]?.push(route);
   }
 

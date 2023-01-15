@@ -1,7 +1,6 @@
 import * as dotenv from "dotenv";
 import { Routeur } from "./Routeur.js";
 import * as UsersControllers from "./Controllers/users.js";
-import { Server } from "./Server.js";
 
 dotenv.config({ path: "./.env" });
 
@@ -9,7 +8,11 @@ const app = new Routeur({ port: process.env.PORT, protocol: "HTTP" });
 
 app.get(
   "/users/register",
-  // () => console.log("holla"),
+  UsersControllers.middleware,
+  UsersControllers.middleware2,
+  UsersControllers.middleware3,
+  UsersControllers.middleware4,
+  UsersControllers.middleware5,
   UsersControllers.register
 );
 app.get("/users/test", UsersControllers.register);

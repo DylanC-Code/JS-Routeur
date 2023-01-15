@@ -1,13 +1,13 @@
 export class Route {
     path;
-    callable;
-    next;
-    constructor(path, callable) {
+    callables;
+    req;
+    res;
+    constructor(path, callables) {
         this.path = path;
-        this.callable = callable;
+        this.callables = callables;
         this.path = this.trimSlash(path);
-        this.next = arguments;
-        console.log(this.next);
+        this.callables = callables;
     }
     match(url) {
         url = this.trimSlash(url);
@@ -25,8 +25,18 @@ export class Route {
             urlTrimed = urlTrimed.slice(0, -1);
         return urlTrimed;
     }
-    run(req, res, next) {
-        this.callable(req, res, next);
+    run(req, res) {
+        this.req = req;
+        this.res = res;
+        this.next();
+    }
+    next() {
+        if (!this.req || !this.res)
+            return;
+        const nextBinded = this.next.bind(this);
+        const callable = this.callables.shift();
+        if (callable)
+            callable(this.req, this.res, nextBinded);
     }
 }
 //# sourceMappingURL=Route.js.map

@@ -2,11 +2,12 @@ import { Controller } from "./types";
 import { IncomingMessage, ServerResponse } from "node:http";
 
 export class Route {
-  private next;
-  constructor(private path: string, private callable: Controller) {
+  private req: IncomingMessage | undefined;
+  private res: ServerResponse | undefined;
+
+  constructor(private path: string, private callables: Controller[]) {
     this.path = this.trimSlash(path);
-    this.next = arguments;
-    console.log(this.next);
+    this.callables = callables;
   }
 
   public match(url: string) {
@@ -28,7 +29,18 @@ export class Route {
     return urlTrimed;
   }
 
-  public run(req: IncomingMessage, res: ServerResponse, next?: Function) {
-    this.callable(req, res, next);
+  public run(req: IncomingMessage, res: ServerResponse) {
+    this.req = req;
+    this.res = res;
+    this.next();
+  }
+
+  private next() {
+    if (!this.req || !this.res) return;
+
+    const nextBinded = this.next.bind(this);
+    const callable = this.callables.shift();
+
+    if (callable) callable(this.req, this.res, nextBinded);
   }
 }
